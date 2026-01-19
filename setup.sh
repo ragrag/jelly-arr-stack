@@ -99,9 +99,8 @@ if [ "$TEST_MODE" = true ]; then
     print_warning "Services available via HTTP only"
 else
     print_status "Obtaining SSL certificates..."
-    certbot --nginx \
+        certbot --nginx \
         -d $DOMAIN \
-        -d www.$DOMAIN \
         -d jellyfin.$DOMAIN \
         -d radarr.$DOMAIN \
         -d sonarr.$DOMAIN \

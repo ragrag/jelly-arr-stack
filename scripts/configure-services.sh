@@ -11,9 +11,9 @@ get_api_key() {
     grep -oP "(?<=ApiKey>)[^<]+" "$1" 2>/dev/null || echo ""
 }
 
-RADARR_KEY=${get_api_key "$DATA_PATH/configs/radarr/config.xml")
+RADARR_KEY=$(get_api_key "$DATA_PATH/configs/radarr/config.xml")
 SONARR_KEY=$(get_api_key "$DATA_PATH/configs/sonarr/config.xml")
-PROWLARR_KEY=${get_api_key "$DATA_PATH/configs/prowlarr/config.xml")
+PROWLARR_KEY=$(get_api_key "$DATA_PATH/configs/prowlarr/config.xml")
 
 echo "[*] API Keys found"
 
