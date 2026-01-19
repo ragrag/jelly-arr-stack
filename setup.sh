@@ -69,6 +69,7 @@ cp "$SCRIPT_DIR/configs/radarr/radarr.db" "$DATA_PATH/configs/radarr/"
 cp "$SCRIPT_DIR/configs/sonarr/config.xml" "$DATA_PATH/configs/sonarr/"
 cp "$SCRIPT_DIR/configs/sonarr/sonarr.db" "$DATA_PATH/configs/sonarr/"
 cp "$SCRIPT_DIR/configs/qbittorrent/qBittorrent.conf" "$DATA_PATH/configs/qbittorrent/qBittorrent/"
+cp "$SCRIPT_DIR/configs/bazarr/config.yaml" "$DATA_PATH/configs/bazarr/config/"
 
 print_status "Pre-configured templates copied!"
 
