@@ -11,10 +11,23 @@ print_status() { echo -e "${GREEN}[*]${NC} $1"; }
 print_warning() { echo -e "${YELLOW}[!]${NC} $1"; }
 print_error() { echo -e "${RED}[x]${NC} $1"; }
 
+# Parse arguments
+TEST_MODE=false
+if [ "$1" = "--test" ]; then
+    TEST_MODE=true
+    shift
+fi
+
 # Check arguments
 if [ -z "$1" ] || [ -z "$2" ]; then
-    echo "Usage: ./setup.sh <domain> <email>"
-    echo "Example: ./setup.sh mrlucky.vip admin@mrlucky.vip"
+    echo "Usage: ./setup.sh [--test] <domain> <email>"
+    echo ""
+    echo "Options:"
+    echo "  --test    Run in test mode (skip SSL, use self-signed certs)"
+    echo ""
+    echo "Examples:"
+    echo "  ./setup.sh mrlucky.vip admin@mrlucky.vip"
+    echo "  ./setup.sh --test localhost test@test.com"
     exit 1
 fi
 
@@ -23,18 +36,24 @@ EMAIL=$2
 DATA_PATH="/media"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+if [ "$TEST_MODE" = true ]; then
+    print_warning "Running in TEST MODE - SSL will be skipped"
+fi
+
 print_status "Starting Media Server Setup for $DOMAIN"
 
 # Step 1: Install dependencies
 print_status "Installing dependencies..."
 apt-get update -qq
-apt-get install -y -qq docker.io docker-compose-v2 nginx snapd curl > /dev/null
+apt-get install -y -qq docker.io docker-compose-v2 nginx curl > /dev/null
 
-# Install certbot via snap
-snap install core > /dev/null 2>&1 || true
-snap refresh core > /dev/null 2>&1 || true
-snap install --classic certbot > /dev/null 2>&1 || true
-ln -sf /snap/bin/certbot /usr/bin/certbot
+if [ "$TEST_MODE" = false ]; then
+    apt-get install -y -qq snapd > /dev/null
+    snap install core > /dev/null 2>&1 || true
+    snap refresh core > /dev/null 2>&1 || true
+    snap install --classic certbot > /dev/null 2>&1 || true
+    ln -sf /snap/bin/certbot /usr/bin/certbot
+fi
 
 systemctl enable docker
 systemctl start docker
@@ -74,23 +93,28 @@ ln -sf /etc/nginx/sites-available/media-server /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 nginx -t && systemctl reload nginx
 
-# Step 8: Get SSL certificates
-print_status "Obtaining SSL certificates..."
-certbot --nginx \
-    -d $DOMAIN \
-    -d www.$DOMAIN \
-    -d jellyfin.$DOMAIN \
-    -d radarr.$DOMAIN \
-    -d sonarr.$DOMAIN \
-    -d bazarr.$DOMAIN \
-    -d qbit.$DOMAIN \
-    -d prowlarr.$DOMAIN \
-    --non-interactive \
-    --agree-tos \
-    --email $EMAIL \
-    --redirect
+# Step 8: SSL Certificates
+if [ "$TEST_MODE" = true ]; then
+    print_warning "TEST MODE: Skipping SSL certificates"
+    print_warning "Services available via HTTP only"
+else
+    print_status "Obtaining SSL certificates..."
+    certbot --nginx \
+        -d $DOMAIN \
+        -d www.$DOMAIN \
+        -d jellyfin.$DOMAIN \
+        -d radarr.$DOMAIN \
+        -d sonarr.$DOMAIN \
+        -d bazarr.$DOMAIN \
+        -d qbit.$DOMAIN \
+        -d prowlarr.$DOMAIN \
+        --non-interactive \
+        --agree-tos \
+        --email $EMAIL \
+        --redirect
+fi
 
-# Step 9: Configure qBittorrent (disable auth for local access)
+# Step 9: Configure qBittorrent
 print_status "Configuring qBittorrent..."
 sleep 5
 docker compose restart qbittorrent
@@ -116,17 +140,31 @@ docker compose restart qbittorrent
 print_status "Running service configuration..."
 bash "$SCRIPT_DIR/scripts/configure-services.sh" "$DOMAIN"
 
+# Print summary
 print_status "======================================"
 print_status "Setup Complete!"
 print_status "======================================"
 echo ""
-echo "Dashboard:  https://$DOMAIN"
-echo "Jellyfin:   https://jellyfin.$DOMAIN"
-echo "Radarr:     https://radarr.$DOMAIN"
-echo "Sonarr:     https://sonarr.$DOMAIN"
-echo "Bazarr:     https://bazarr.$DOMAIN"
-echo "qBittorrent: https://qbit.$DOMAIN"
-echo "Prowlarr:   https://prowlarr.$DOMAIN"
+
+if [ "$TEST_MODE" = true ]; then
+    echo "TEST MODE - HTTP URLs:"
+    echo "Dashboard:   http://localhost:8888"
+    echo "Jellyfin:    http://localhost:8096"
+    echo "Radarr:      http://localhost:7878"
+    echo "Sonarr:      http://localhost:8989"
+    echo "Bazarr:      http://localhost:6767"
+    echo "qBittorrent: http://localhost:8080"
+    echo "Prowlarr:    http://localhost:9696"
+else
+    echo "Dashboard:   https://$DOMAIN"
+    echo "Jellyfin:    https://jellyfin.$DOMAIN"
+    echo "Radarr:      https://radarr.$DOMAIN"
+    echo "Sonarr:      https://sonarr.$DOMAIN"
+    echo "Bazarr:      https://bazarr.$DOMAIN"
+    echo "qBittorrent: https://qbit.$DOMAIN"
+    echo "Prowlarr:    https://prowlarr.$DOMAIN"
+fi
+
 echo ""
 print_warning "Next steps:"
 echo "1. Open Jellyfin and create admin user"
