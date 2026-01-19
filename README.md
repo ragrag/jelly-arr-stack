@@ -1,4 +1,4 @@
-# Media Server Setup
+# Jellyfin + *arr stack 1 script vps setup
 
 One-command deployment of a complete media server with:
 - **Jellyfin** - Stream your media
