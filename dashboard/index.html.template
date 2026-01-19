@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Server</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            color: #fff;
+            background: #000;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(to right, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.4) 100%),
+                url("https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1920&q=80") center/cover no-repeat;
+            z-index: -1;
+        }
+        
+        .container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 60px 24px;
+        }
+        
+        .content {
+            max-width: 500px;
+            width: 100%;
+            margin-left: 8%;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+        
+        .card {
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 28px 20px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.25s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #e50914;
+            transform: scaleX(0);
+            transition: transform 0.25s ease;
+        }
+        
+        .card:hover {
+            background: rgba(40, 40, 40, 0.85);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border-color: rgba(255,255,255,0.2);
+        }
+        
+        .card:hover::after {
+            transform: scaleX(1);
+        }
+        
+        .card-icon {
+            font-size: 36px;
+            margin-bottom: 14px;
+            display: block;
+        }
+        
+        .card:hover .card-icon {
+            transform: scale(1.15);
+            transition: transform 0.25s ease;
+        }
+        
+        .card-action {
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+            .bg {
+                background: 
+                    linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.9) 100%),
+                    url("https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1920&q=80") center/cover no-repeat;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <div class="content">
+            <div class="grid">
+                <a href="https://jellyfin.{{DOMAIN}}" class="card">
+                    <span class="card-icon">📺</span>
+                    <div class="card-action">Watch</div>
+                </a>
+                
+                <a href="https://radarr.{{DOMAIN}}" class="card">
+                    <span class="card-icon">🎬</span>
+                    <div class="card-action">Add Movies</div>
+                </a>
+                
+                <a href="https://sonarr.{{DOMAIN}}" class="card">
+                    <span class="card-icon">📡</span>
+                    <div class="card-action">Add TV Shows</div>
+                </a>
+                
+                <a href="https://bazarr.{{DOMAIN}}" class="card">
+                    <span class="card-icon">💬</span>
+                    <div class="card-action">Subtitles</div>
+                </a>
+                
+                <a href="https://qbit.{{DOMAIN}}" class="card">
+                    <span class="card-icon">⬇️</span>
+                    <div class="card-action">Downloads</div>
+                </a>
+                
+                <a href="https://prowlarr.{{DOMAIN}}" class="card">
+                    <span class="card-icon">🔍</span>
+                    <div class="card-action">Search Sources</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
