@@ -58,7 +58,7 @@ print_status "Dependencies installed"
 
 # Step 2: Create directories
 print_status "Creating directories..."
-mkdir -p $DATA_PATH/{configs/{jellyfin,radarr,sonarr,bazarr,qbittorrent/qBittorrent,prowlarr},jellyfin/cache,radarr/movies,sonarr/tv,qbittorrent/downloads}
+mkdir -p $DATA_PATH/{configs/{jellyfin,radarr,sonarr,bazarr/config,qbittorrent/qBittorrent,prowlarr},jellyfin/cache,radarr/movies,sonarr/tv,qbittorrent/downloads}
 
 # Step 3: Copy pre-configured templates (THE KEY STEP!)
 print_status "Copying pre-configured service templates..."
