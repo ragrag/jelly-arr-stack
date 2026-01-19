@@ -1,80 +1,48 @@
-# Jellyfin + *arr stack 1 script vps setup
+# Media Server Setup
 
-One-command deployment of a complete media server with:
-- **Jellyfin** - Stream your media
-- **Radarr** - Movie management
-- **Sonarr** - TV show management
-- **Bazarr** - Subtitle downloads
-- **qBittorrent** - Download client
-- **Prowlarr** - Indexer management
-- **FlareSolverr** - Cloudflare bypass
-
-## Requirements
-
-- Fresh Ubuntu/Debian VPS
-- Domain with DNS A records pointing to your server:
-  - `yourdomain.com`
-  - `www.yourdomain.com`
-  - `jellyfin.yourdomain.com`
-  - `radarr.yourdomain.com`
-  - `sonarr.yourdomain.com`
-  - `bazarr.yourdomain.com`
-  - `qbit.yourdomain.com`
-  - `prowlarr.yourdomain.com`
+One-command deployment of a complete media server with zero manual configuration.
 
 ## Quick Start
 
 ```bash
-# Clone the repo
-git clone https://github.com/YOURUSER/media-server-setup
-cd media-server-setup
-
-# Run setup (replace with your domain and email)
+git clone https://github.com/ragrag/jelly-arr-stack.git
+cd jelly-arr-stack
 sudo ./setup.sh yourdomain.com your@email.com
 ```
 
-## What the setup does
-
-1. Installs Docker, Nginx, Certbot
-2. Creates data directories at `/media`
-3. Starts all containers
-4. Configures Nginx reverse proxy
-5. Obtains SSL certificates (auto-renewal enabled)
-6. Connects all services together
-
-## Post-Setup
+## Post-Setup (2 minutes)
 
 1. Go to `https://jellyfin.yourdomain.com`
-2. Create your admin account
-3. Add libraries:
-   - Movies: `/data/movies`
-   - TV Shows: `/data/tvshows`
-4. Optionally create a "Guest" user for open access
+2. Complete Jellyfin setup wizard:
+   - Create admin user
+   - Add Movies library: `/data/movies`
+   - Add TV Shows library: `/data/tvshows`
 
-## Directory Structure
+That is it! Everything else is pre-configured.
 
-```
-/media/
-├── configs/          # Service configurations
-│   ├── jellyfin/
-│   ├── radarr/
-│   ├── sonarr/
-│   ├── bazarr/
-│   ├── qbittorrent/
-│   └── prowlarr/
-├── radarr/movies/    # Movie files
-├── sonarr/tv/        # TV show files
-└── qbittorrent/downloads/  # Active downloads
-```
+## What is Pre-Configured
+
+- ✅ 3 Torrent indexers (1337x, EZTV, LimeTorrents with Cloudflare bypass)
+- ✅ qBittorrent connected to Radarr & Sonarr
+- ✅ Root folders for movies and TV
+- ✅ Subtitle providers with auto-download
+- ✅ Bazarr linked to Radarr & Sonarr
+- ✅ SSL certificates with auto-renewal
+- ✅ Netflix-style dashboard
+
+## Usage
+
+1. **Add a movie:** Radarr → Search → Add
+2. **Add a TV show:** Sonarr → Search → Add
+3. **Watch:** Content appears in Jellyfin automatically
+4. **Subtitles:** Downloaded automatically by Bazarr
 
 ## Services
 
-| Service | Port | URL |
-|---------|------|-----|
-| Dashboard | 8888 | https://yourdomain.com |
-| Jellyfin | 8096 | https://jellyfin.yourdomain.com |
-| Radarr | 7878 | https://radarr.yourdomain.com |
-| Sonarr | 8989 | https://sonarr.yourdomain.com |
-| Bazarr | 6767 | https://bazarr.yourdomain.com |
-| qBittorrent | 8080 | https://qbit.yourdomain.com |
-| Prowlarr | 9696 | https://prowlarr.yourdomain.com |
+- Dashboard: https://yourdomain.com
+- Jellyfin: https://jellyfin.yourdomain.com
+- Radarr: https://radarr.yourdomain.com
+- Sonarr: https://sonarr.yourdomain.com
+- Bazarr: https://bazarr.yourdomain.com
+- qBittorrent: https://qbit.yourdomain.com
+- Prowlarr: https://prowlarr.yourdomain.com
