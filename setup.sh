@@ -114,6 +114,7 @@ else
         -d bazarr.$DOMAIN \
         -d qbit.$DOMAIN \
         -d prowlarr.$DOMAIN \
+            -d jellyseerr.$DOMAIN \
         --non-interactive \
         --agree-tos \
         --email $EMAIL \

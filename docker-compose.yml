@@ -108,3 +108,15 @@ services:
     ports:
       - "8191:8191"
     restart: unless-stopped
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=\${TZ}
+    ports:
+      - "5055:5055"
+    volumes:
+      - \${DATA_PATH}/configs/jellyseerr:/app/config
+    restart: unless-stopped

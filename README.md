@@ -46,3 +46,4 @@ That is it! Everything else is pre-configured.
 - Bazarr: https://bazarr.yourdomain.com
 - qBittorrent: https://qbit.yourdomain.com
 - Prowlarr: https://prowlarr.yourdomain.com
+  - `jellyseerr.yourdomain.com`
