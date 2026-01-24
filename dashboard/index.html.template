@@ -81,16 +81,16 @@
     <div class="container">
         <div class="content">
             <div class="grid">
-                <a href="https://jellyfin.{{DOMAIN}}" class="card">
+                <a href="https://jellyseerr.{{DOMAIN}}" class="card">
                     <span class="card-icon">📺</span>
                     <div class="card-action">Watch</div>
                 </a>
-                <a href="https://jellyseerr.{{DOMAIN}}" class="card">
-                    <span class="card-icon">🔍</span>
-                    <div class="card-action">Request</div>
+                <a href="https://jellyfin.{{DOMAIN}}" class="card">
+                    <span class="card-icon">🎬</span>
+                    <div class="card-action">Jellyfin</div>
                 </a>
                 <a href="https://radarr.{{DOMAIN}}" class="card">
-                    <span class="card-icon">🎬</span>
+                    <span class="card-icon">🎥</span>
                     <div class="card-action">Add Movies</div>
                 </a>
                 <a href="https://sonarr.{{DOMAIN}}" class="card">
